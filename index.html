@@ -530,6 +530,19 @@ body.timed-mode .timed-note{margin-top:6px}
   .home-action-top,.home-visual{display:none!important;}
 }
 
+
+/* Bilingual controls: visible in every mode, including small phones. */
+.header-controls{display:flex;align-items:center;gap:clamp(10px,2vw,20px);flex:none}
+.language-switch{display:inline-flex;align-items:center;gap:3px;padding:4px;border:1px solid #dedcf2;border-radius:14px;background:#fff;box-shadow:0 5px 16px #6964c010;white-space:nowrap;flex:none}
+.language-option{font:700 12px/1.1 system-ui,sans-serif;min-height:33px;min-width:43px;border:0;border-radius:10px;padding:6px 9px;background:transparent;color:#898ba4;transition:background .15s,color .15s}
+.language-option.active{background:#ece9ff;color:#514cad;box-shadow:inset 0 0 0 1px #d4cef9}
+.language-option:hover:not(.active){background:#f7f5ff;color:#5750aa}
+html[lang="en"] .home-action-top p{letter-spacing:-.01em}
+html[lang="en"] .status-label{letter-spacing:-.025em}
+html[lang="en"] .home-intro .lead{line-height:1.55}
+html[lang="en"] .mode-desc{line-height:1.45}
+@media(max-width:600px){.language-switch{gap:2px;padding:3px;border-radius:12px}.language-option{min-width:36px;min-height:31px;font-size:11px;padding:5px 6px}.brand{gap:7px}.site-header{gap:7px}}
+@media(max-width:360px){.brand small{max-width:116px}.language-option{min-width:34px}}
 </style>
   
 </head>
@@ -540,7 +553,8 @@ body.timed-mode .timed-note{margin-top:6px}
   <main class="app">
     <header class="site-header">
       <div class="brand"><span class="brand-icon" aria-hidden="true">∿</span><span><strong>TRIG BLOOM</strong><small>三角関数を、少しずつ得意に。</small></span></div>
-      <span class="header-note" aria-hidden="true">✦ learn at your pace</span>
+      <div class="header-controls"><span class="header-note" aria-hidden="true">✦ learn at your pace</span>
+      <div class="language-switch" role="group" aria-label="表示言語 / Language"><button type="button" class="language-option active" data-lang="ja" aria-pressed="true">日本語</button><button type="button" class="language-option" data-lang="en" aria-pressed="false">EN</button></div></div>
     </header>
 
     <section class="screen start-screen" id="homeScreen" aria-labelledby="homeTitle">
@@ -674,7 +688,7 @@ function texQuestion(fn,angle) {return '\\'+fn+'\\,'+texValue(angle)+'\\;=\\; ?'
 function texAnswer(fn,angle,value) {return '\\'+fn+'\\,'+texValue(angle)+'\\;=\\; '+texValue(value);}
 function texCoordinate(axis,value) {return axis+'\\;=\\;\\'+(axis==='x'?'cos':'sin')+'\\theta\\;=\\;'+texValue(value);}
 function svgMath(tex) {
-  if(tex===null)return '定義なし';
+  if(tex===null)return t('undefined');
   return MATH_SVGS[tex]||tex;
 }
 function readableMath(tex){
@@ -705,6 +719,67 @@ const MAGNITUDES = ['0','1/2','1/√2','√3/2','1','1/√3','√3'];
 const FUNCS = ['sin','cos','tan'];
 const $ = id => document.getElementById(id);
 const els = {};
+// Language settings are independent of the quiz state. Changing language mid-question
+// never resets the timer, selected value, correct count, or streak.
+const TRANSLATIONS = {"ja":{"brandSubtitle":"三角関数を、少しずつ得意に。","homeTitle":"角度がわかる。<br><em>値がわかる。</em>","homeLead":"問題を見て、符号と値を選ぶだけ。<br>答え合わせでは単位円が教えてくれるよ。","homeVisualTop":"✦ 単位円で「なぜ？」がわかる","homeVisualFoot":"位置を確かめると、答えが自分のものになる。","homeActionTitle":"今日は、どちらで挑戦する？","homeActionSub":"まずは自分のペースで。慣れたらタイムアタック！","modePracticeName":"じっくり練習","modePracticeDesc":"単位円を見ながら、自分のペースで。","modePracticeCta":"はじめる <span aria-hidden=\"true\">→</span>","modeTimedName":"60秒チャレンジ","modeTimedDesc":"ミス −5秒／10連続正解で ＋5秒","modeTimedCta":"挑戦する <span aria-hidden=\"true\">→</span>","levelHeading":"出題範囲","levelBasic":"基本角","levelAll":"全角度","levelDescBasic":"まずは第1象限の基本角から","levelDescAll":"第2〜4象限の符号にもチャレンジ","homeBottomTip":"間違えても大丈夫。図で確認すれば、それが次の正解になる。","back":"← モード選択","statusCorrect":"正解","statusStreak":"連続正解 ✦","statusTime":"のこり時間","statusAttempts":"チャレンジ数","unitShort":" 問","secShort":" 秒","modeTimedLabel":"◷ 60秒チャレンジ","modePracticeLabel":"✿ じっくり練習","questionGuide":"符号と値を選んで、「決定」を押そう。","answerHeading":"答えをつくろう","selectedLabel":"えらんだ答え","signLabel":"符号","signHint":"マイナスの値なら「−」","valuesLabel":"値","valuesHint":"ひとつ選ぼう","checkButton":"答えを決定 <span aria-hidden=\"true\">→</span>","skipButton":"パスする","keyboardTip":"キーボード：1〜7で値・−で符号・Enterで決定","correctAnswerLabel":"正しい答え","undefined":"定義なし","unitCircleHeading":"単位円でチェック","circleFootnote":"円周上の点は","nextButton":"次の問題へ <span aria-hidden=\"true\">→</span>","timedAutoNote":"もうすぐ次の問題へ。","circleAngle":"角度","circleHorizontal":"横：cos","circleVertical":"縦：sin","circleAria":"単位円の{deg}度の位置。x座標は{x}、y座標は{y}","praise1":"いいね、その調子！","praise2":"ばっちり！","praise3":"正解！ひとつ身についたね。","praise4":"いい感じ！","streakBonus":"10連続正解！","missTimed":"次にいこう！","skipTimed":"ひとつ覚えて次へ！","skipPractice":"図を見て、ひとつ覚えよう。","missPractice":"あと一歩。今の確認が力になるよ。","feedbackTimedCorrect":"その調子で次へ！","feedbackTimedWrong":"次で取り返そう。","feedbackPracticeCorrect":"位置と座標を確認しよう。","feedbackPracticeWrong":"ここから分かれば、次は大丈夫。","bonusTime":"✦ 10問連続正解！ 残り時間 ＋5秒","penaltyTime":"ミス・パス：残り時間 −5秒","explainSin":"sin は縦の位置（y座標）。上側は＋、下側は−です。","explainCos":"cos は横の位置（x座標）。右側は＋、左側は−です。","explainTanUndef":"tan は sin ÷ cos。cos = 0 なので、定義されません。","explainTan":"tan は y ÷ x。縦と横の符号に注目しよう。","resultTitle":"チャレンジ、おつかれさま！","resultCorrect":"今回の正解数","resultAnswered":"答えた問題","resultStreak":"最大連続正解","resultRecord":"自己ベスト","retry":"もう1回チャレンジ →","homeButton":"モード選択へ","resultNewRecord":"自己ベスト更新！少しずつできることが増えているね。","resultNormal":"今日の挑戦が、次の正解につながるよ。","resultZero":"まずは挑戦できたことがスタート！次もいこう。","siteFooter":"TRIG BLOOM · 正確な値を、図で理解しよう。","pageTitle":"TRIG BLOOM｜三角関数クイズ · TeX数式","pageDescription":"単位円で身につく三角関数の一問一答。じっくり練習と60秒チャレンジ。"},"en":{"brandSubtitle":"Build confidence with trigonometry.","homeTitle":"See the angle.<br><em>Find the value.</em>","homeLead":"Choose the sign and the value.<br>The unit circle shows you why.","homeVisualTop":"✦ See why with the unit circle","homeVisualFoot":"See the point. Remember the value.","homeActionTitle":"How will you practice today?","homeActionSub":"Learn at your pace or beat the clock.","modePracticeName":"Practice","modePracticeDesc":"Take your time. Learn with the unit circle.","modePracticeCta":"Start <span aria-hidden=\"true\">→</span>","modeTimedName":"60s Challenge","modeTimedDesc":"Miss −5s · 10 in a row +5s","modeTimedCta":"Let’s go <span aria-hidden=\"true\">→</span>","levelHeading":"Question range","levelBasic":"Basic angles","levelAll":"All angles","levelDescBasic":"Start with quadrant I","levelDescAll":"Explore signs in every quadrant","homeBottomTip":"Each mistake is a chance to learn.","back":"← Choose mode","statusCorrect":"Correct","statusStreak":"Streak ✦","statusTime":"Time left","statusAttempts":"Answered","unitShort":"","secShort":" s","modeTimedLabel":"◷ 60s Challenge","modePracticeLabel":"✿ Practice","questionGuide":"Choose a sign and a value. Then check.","answerHeading":"Build your answer","selectedLabel":"Your answer","signLabel":"Sign","signHint":"Use − for negative values","valuesLabel":"Value","valuesHint":"Choose one","checkButton":"Check Answer <span aria-hidden=\"true\">→</span>","skipButton":"Skip","keyboardTip":"Keys: 1–7 value · − sign · Enter check","correctAnswerLabel":"Correct answer","undefined":"Undefined","unitCircleHeading":"Check the unit circle","circleFootnote":"The point on the circle is","nextButton":"Next Question <span aria-hidden=\"true\">→</span>","timedAutoNote":"Next question coming up…","circleAngle":"Angle","circleHorizontal":"Horizontal: cos","circleVertical":"Vertical: sin","circleAria":"Point at {deg} degrees on the unit circle. x-coordinate {x}, y-coordinate {y}","praise1":"Nice work!","praise2":"You got it!","praise3":"Correct! Another step forward.","praise4":"Great job!","streakBonus":"10 in a row!","missTimed":"Keep going!","skipTimed":"Learn one, then move on!","skipPractice":"See the diagram and learn one.","missPractice":"Almost there. Every review helps.","feedbackTimedCorrect":"On to the next one!","feedbackTimedWrong":"You can get the next one!","feedbackPracticeCorrect":"Check the point and coordinates.","feedbackPracticeWrong":"Review it now. You’re learning.","bonusTime":"✦ 10 correct in a row! +5s","penaltyTime":"Miss or skip: −5s","explainSin":"sin is the vertical position (y). Above is +; below is −.","explainCos":"cos is the horizontal position (x). Right is +; left is −.","explainTanUndef":"tan = sin ÷ cos. When cos = 0, tan is undefined.","explainTan":"tan = y ÷ x. Check the signs of x and y.","resultTitle":"Challenge complete!","resultCorrect":"Correct answers","resultAnswered":"Questions answered","resultStreak":"Best streak","resultRecord":"Personal best","retry":"Try Again →","homeButton":"Choose Mode","resultNewRecord":"New personal best! Your practice is paying off.","resultNormal":"Every try makes you stronger. Keep it up!","resultZero":"Great first step! Give it another try.","siteFooter":"TRIG BLOOM · Learn exact values through visuals.","pageTitle":"TRIG BLOOM | Trigonometry Quiz","pageDescription":"Practice special-angle sine, cosine and tangent with unit-circle explanations and a 60-second challenge."}};
+const STATIC_TRANSLATIONS = [[".brand small","brandSubtitle","text"],["#homeTitle","homeTitle","html"],[".home-intro .lead","homeLead","html"],[".home-visual-top","homeVisualTop","prepend"],[".home-visual-foot","homeVisualFoot","text"],[".home-action-top h2","homeActionTitle","text"],[".home-action-top p","homeActionSub","text"],[".mode-practice .mode-name","modePracticeName","text"],[".mode-practice .mode-desc","modePracticeDesc","text"],[".mode-practice .mode-cta","modePracticeCta","html"],[".mode-timed .mode-name","modeTimedName","text"],[".mode-timed .mode-desc","modeTimedDesc","text"],[".mode-timed .mode-cta","modeTimedCta","html"],[".level-heading","levelHeading","text"],["[data-level=\"basic\"]","levelBasic","firstText"],["[data-level=\"all\"]","levelAll","firstText"],[".bottom-tip","homeBottomTip","afterSpan"],["#backButton","back","text"],[".status-cell:nth-child(1) .status-label","statusCorrect","text"],[".status-cell:nth-child(2) .status-label","statusStreak","text"],[".status-cell:nth-child(3) .status-label","statusTime","text"],[".status-cell:nth-child(4) .status-label","statusAttempts","text"],[".answer-heading h2","answerHeading","text"],[".selected-preview","selectedLabel","firstText"],[".group-name","signLabel","text"],[".input-hint","signHint","text"],[".values-title","valuesLabel","firstText"],[".values-title span","valuesHint","text"],["#checkButton","checkButton","html"],["#skipButton","skipButton","text"],[".keyboard-tip","keyboardTip","text"],[".correct-answer > span","correctAnswerLabel","text"],[".explanation-copy h3","unitCircleHeading","text"],[".circle-footnote","circleFootnote","firstText"],["#nextButton","nextButton","html"],["#timedAutoNote","timedAutoNote","text"],["#resultScreen > h1","resultTitle","text"],[".result-feature > span","resultCorrect","text"],[".result-feature > div > span","unitShort","text"],[".result-details > div:nth-child(1) > span","resultAnswered","text"],[".result-details > div:nth-child(2) > span","resultStreak","text"],[".result-details > div:nth-child(3) > span","resultRecord","text"],["#retryButton","retry","text"],["#homeButton","homeButton","text"],[".site-footer","siteFooter","text"]];
+let language = 'ja';
+let resultData = null;
+const t = key => TRANSLATIONS[language][key];
+function setTextNode(element,text) {
+  const node=Array.from(element.childNodes).find(n=>n.nodeType===Node.TEXT_NODE);
+  if(node)node.textContent=text+' ';
+}
+function renderLocaleStatic(){
+  document.documentElement.lang=language;
+  document.querySelector('.language-switch').setAttribute('aria-label',language==='en'?'Language':'表示言語');
+  document.title=t('pageTitle');
+  document.querySelector('meta[name="description"]').content=t('pageDescription');
+  document.querySelectorAll('[data-lang]').forEach(b=>{
+    const active=b.dataset.lang===language;
+    b.classList.toggle('active',active);
+    b.setAttribute('aria-pressed',String(active));
+  });
+  for(const [selector,key,how] of STATIC_TRANSLATIONS){
+    const node=document.querySelector(selector);
+    if(!node)continue;
+    if(how==='html')node.innerHTML=t(key);
+    else if(how==='firstText')setTextNode(node,t(key));
+    else if(how==='afterSpan'){
+      const span=node.querySelector('span');
+      if(span){node.replaceChildren(span,document.createTextNode(' '+t(key)));}
+    }else if(how==='prepend'){
+      const label=node.querySelector('.home-visual-label');
+      if(label)node.replaceChildren(document.createTextNode(t(key)+' '),label);
+    }else node.textContent=t(key);
+  }
+  document.querySelector('.mode-grid').setAttribute('aria-label',language==='en'?'Choose a mode':'モードを選ぶ');
+  document.querySelector('.level-switch').setAttribute('aria-label',language==='en'?'Question range':'出題範囲');
+  document.querySelector('.sign-buttons').setAttribute('aria-label',language==='en'?'Answer sign':'答えの符号');
+  document.querySelector('.value-grid').setAttribute('aria-label',language==='en'?'Answer value':'答えの値');
+  $('playScreen').setAttribute('aria-label',language==='en'?'Quiz screen':'クイズ画面');
+  $('resultScreen').setAttribute('aria-label',language==='en'?'Challenge results':'チャレンジ結果');
+  document.querySelector('.question-card').setAttribute('aria-label',language==='en'?'Question':'問題');
+  $('answerPanel').setAttribute('aria-label',language==='en'?'Choose an answer':'答えを選ぶ');
+  $('timerTrack').setAttribute('aria-label',language==='en'?'Time remaining':'残り時間');
+}
+function setLanguage(next){
+  language=next==='en'?'en':'ja';
+  try{localStorage.setItem('trig-bloom-language',language);}catch(_){}
+  renderLocaleStatic();
+  chooseLevel(level);
+  updateStats();
+  $('currentMode').textContent=mode==='timed'?t('modeTimedLabel'):t('modePracticeLabel');
+  if(current&&state==='play'){
+    if(!$('answerPanel').hidden){
+      $('questionGuide').textContent=t('questionGuide');
+      buildValueButtons();updateSelection();
+    }else if(lastResult)reveal(lastResult,true);
+    if(mode==='timed')tick();
+  }
+  if(state==='result'&&resultData)renderResult();
+}
+
 let level = 'basic';
 let mode = 'practice';
 let state = 'home';
@@ -727,9 +802,9 @@ function writeRecord(key,value) { try { localStorage.setItem(key,String(value));
 function shuffle(arr) { for (let i=arr.length-1;i>0;i--) { const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; }
 function showScreen(which) { for (const name of ['home','play','result']) $(name+'Screen').hidden = name!==which; state=which; window.scrollTo({top:0,behavior:'instant'}); }
 function normalizeValue(value) { return value==='-0'?'0':value; }
-function prettyValue(value) { return value==='undef'?'定義なし':value.replace(/^-/, '−'); }
+function prettyValue(value) { return value==='undef'?t('undefined'):value.replace(/^-/, '−'); }
 function currentAnswer() { if (selectedMagnitude===null) return null; if (selectedMagnitude==='undef') return 'undef'; return normalizeValue((selectedSign===-1?'-':'')+selectedMagnitude); }
-function updateStats() { $('correctCount').innerHTML=correct+'<span class="unit"> 問</span>'; $('streakCount').innerHTML=streak+'<span class="unit"> 問</span>'; $('attemptCount').innerHTML=attempts+'<span class="unit"> 問</span>'; }
+function updateStats() { for(const [id,num] of [['correctCount',correct],['streakCount',streak],['attemptCount',attempts]])$(id).innerHTML=num+'<span class="unit">'+t('unitShort')+'</span>'; }
 
 function buildValueButtons() {
   const grid=$('valueGrid'); grid.replaceChildren();
@@ -739,7 +814,7 @@ function buildValueButtons() {
     button.type='button'; button.className='value-button'+(value==='undef'?' undefined':'');
     button.innerHTML=svgMath(texValue(value)); button.dataset.value=value;
     button.setAttribute('aria-pressed',String(value===selectedMagnitude));
-    button.setAttribute('aria-label',value==='undef'?'定義なし':prettyValue(value));
+    button.setAttribute('aria-label',value==='undef'?t('undefined'):prettyValue(value));
     button.addEventListener('click',()=>pickValue(value)); grid.appendChild(button);
   }
 }
@@ -776,14 +851,14 @@ function chooseLevel(next) {
     const active=b.dataset.level===level;
     b.classList.toggle('active',active); b.setAttribute('aria-pressed',String(active));
   });
-  $('levelDescription').textContent=level==='basic'?'まずは第1象限の基本角から':'第2〜4象限の符号にもチャレンジ';
+  $('levelDescription').textContent=level==='basic'?t('levelDescBasic'):t('levelDescAll');
   writeRecord('trig-bloom-level',level==='all'?1:0);
 }
 function start(nextMode) {
   document.body.classList.remove('is-reveal');
   clearInterval(timerId); clearTimeout(autoNextId); timerId=null; autoNextId=null;
   mode=nextMode; current=null; queue=[]; correct=0; attempts=0; streak=0; maxStreak=0; questionCount=0;
-  $('currentMode').textContent=mode==='timed'?'◷ 60秒チャレンジ':'✿ じっくり練習';
+  $('currentMode').textContent=mode==='timed'?t('modeTimedLabel'):t('modePracticeLabel');
   $('timeCell').hidden=mode!=='timed'; $('questionCell').hidden=mode==='timed'; $('timerTrack').hidden=mode!=='timed';
   $('timedAutoNote').hidden=mode!=='timed';
   document.body.classList.toggle('timed-mode',mode==='timed');
@@ -812,7 +887,7 @@ function nextQuestion() {
   $('questionFormula').innerHTML=svgMath(texQuestion(current.fn,current.angle.rad));
   $('answerPanel').hidden=false; $('feedbackPanel').hidden=true;
   $('timeAdjustment').hidden=true;
-  $('questionGuide').textContent='符号と値を選んで、「決定」を押そう。';
+  $('questionGuide').textContent=t('questionGuide');
   buildValueButtons(); updateSelection();
 }
 function submit(skipped=false) {
@@ -828,7 +903,7 @@ function submit(skipped=false) {
   // Every tenth CONSECUTIVE correct answer awards 5 seconds.
   const timeDelta=mode==='timed' ? (isCorrect?(streak%10===0?5:0):-5) : 0;
   if(mode==='timed') deadline+=timeDelta*1000;
-  lastResult={isCorrect,skipped,expected,timeDelta};
+  lastResult={isCorrect,skipped,expected,timeDelta,praiseIndex:Math.floor(Math.random()*4)};
   updateStats(); reveal(lastResult);
   if(mode==='timed') {
     tick();
@@ -836,38 +911,40 @@ function submit(skipped=false) {
     autoNextId=setTimeout(()=>{if(state==='play')nextQuestion();},680);
   }
 }
-function reveal(result) {
+function reveal(result,refreshOnly=false) {
   document.body.classList.add('is-reveal');
   const {isCorrect,skipped,expected,timeDelta=0}=result;
   const timed=mode==='timed';
   $('answerPanel').hidden=true; $('feedbackPanel').hidden=false;
   $('feedbackEmblem').textContent=isCorrect?'✦':'♡';
   $('feedbackEmblem').classList.toggle('try',!isCorrect);
-  const nice=['いいね、その調子！','ばっちり！','正解！ひとつ身についたね。','いい感じ！'];
-  $('feedbackTitle').textContent=timed && timeDelta===5 ? '10連続正解！' :
-    (timed && !isCorrect ? (skipped?'ひとつ覚えて次へ！':'次にいこう！') : (isCorrect?nice[Math.floor(Math.random()*nice.length)]:(skipped?'図を見て、ひとつ覚えよう。':'あと一歩。今の確認が力になるよ。')));
-  $('feedbackSubtitle').textContent=timed?(isCorrect?'その調子で次へ！':'次で取り返そう。'):
-    (isCorrect?'位置と座標を確認しよう。':'ここから分かれば、次は大丈夫。');
-  $('revealedAnswer').innerHTML=expected==='undef'?(svgMath(texQuestion(current.fn,current.angle.rad).replace('?', '').trim())+' <span class="undefined-label">定義なし</span>'):svgMath(texAnswer(current.fn,current.angle.rad,expected));
+  const praise=['praise1','praise2','praise3','praise4'];
+  const praiseIndex=result.praiseIndex??0;
+  $('feedbackTitle').textContent=timed&&timeDelta===5?t('streakBonus'):
+    (timed&&!isCorrect?t(skipped?'skipTimed':'missTimed'):(isCorrect?t(praise[praiseIndex]):t(skipped?'skipPractice':'missPractice')));
+  $('feedbackSubtitle').textContent=timed?t(isCorrect?'feedbackTimedCorrect':'feedbackTimedWrong'):
+    t(isCorrect?'feedbackPracticeCorrect':'feedbackPracticeWrong');
+  $('revealedAnswer').innerHTML=expected==='undef'?(
+    svgMath(texQuestion(current.fn,current.angle.rad).replace('?', '').trim())+' <span class="undefined-label">'+t('undefined')+'</span>'
+  ):svgMath(texAnswer(current.fn,current.angle.rad,expected));
   $('explanationLayout').hidden=timed;
   const adjust=$('timeAdjustment');
-  adjust.hidden=!timed || timeDelta===0;
-  if(timeDelta!==0) {
+  adjust.hidden=!timed||timeDelta===0;
+  if(timeDelta!==0){
     adjust.className='time-adjustment '+(timeDelta>0?'time-gain':'time-loss');
-    adjust.textContent=timeDelta>0?'✦ 10問連続正解！ 残り時間 ＋5秒':'ミス・パス：残り時間 −5秒';
+    adjust.textContent=t(timeDelta>0?'bonusTime':'penaltyTime');
   }
-  if(!timed) {
+  if(!timed){
     $('coordinateX').innerHTML=svgMath(texCoordinate('x',current.angle.cos));
     $('coordinateY').innerHTML=svgMath(texCoordinate('y',current.angle.sin));
   }
-  if(current.fn==='sin') $('answerExplanation').textContent='sin は縦の位置（y座標）。上側は＋、下側は−です。';
-  else if(current.fn==='cos') $('answerExplanation').textContent='cos は横の位置（x座標）。右側は＋、左側は−です。';
-  else if(expected==='undef') $('answerExplanation').textContent='tan は sin ÷ cos。cos = 0 なので、定義されません。';
-  else $('answerExplanation').textContent='tan は y ÷ x。縦と横の符号に注目しよう。';
+  if(current.fn==='sin')$('answerExplanation').textContent=t('explainSin');
+  else if(current.fn==='cos')$('answerExplanation').textContent=t('explainCos');
+  else if(expected==='undef')$('answerExplanation').textContent=t('explainTanUndef');
+  else $('answerExplanation').textContent=t('explainTan');
   $('circleDrawing').innerHTML=timed?'':unitCircleSvg(current.angle);
-  $('nextButton').textContent=mode==='timed'?'次の問題へ →':'次の問題へ →';
   $('nextButton').hidden=timed;
-  if(!timed) $('nextButton').focus({preventScroll:true});
+  if(!timed&&!refreshOnly)$('nextButton').focus({preventScroll:true});
 }
 function unitCircleSvg(angle) {
   const cx=180,cy=180,r=122,theta=angle.deg*Math.PI/180;
@@ -878,8 +955,8 @@ function unitCircleSvg(angle) {
   const arcEndY=Number((cy-40*Math.sin(deg*Math.PI/180)).toFixed(2));
   const arc=deg===0?'':`<path d="M ${cx} ${cy} L ${cx+40} ${cy} A 40 40 0 ${deg>180?1:0} 0 ${arcEndX} ${arcEndY} Z" fill="#ddd8fb" opacity=".75"/>`;
   const activeX=angle.cos==='0'?cx:fx;
-  return `<div class="circle-angle-heading">角度 <span>${svgMath(texValue(angle.rad))}</span><small>（${angle.deg}°）</small></div>
-  <svg viewBox="0 0 360 330" role="img" aria-label="単位円の${angle.deg}度の位置。x座標は${prettyValue(angle.cos)}、y座標は${prettyValue(angle.sin)}">
+  return `<div class="circle-angle-heading">${t('circleAngle')} <span>${svgMath(texValue(angle.rad))}</span><small>（${angle.deg}°）</small></div>
+  <svg viewBox="0 0 360 330" role="img" aria-label="${t('circleAria').replace('{deg}',angle.deg).replace('{x}',prettyValue(angle.cos)).replace('{y}',prettyValue(angle.sin))}">
   <rect width="360" height="330" fill="#fafaff" rx="18"/>
   <line x1="28" y1="180" x2="331" y2="180" stroke="#b3b6ce" stroke-width="1.3"/>
   <line x1="180" y1="332" x2="180" y2="29" stroke="#b3b6ce" stroke-width="1.3"/>
@@ -899,16 +976,25 @@ function unitCircleSvg(angle) {
   <circle cx="180" cy="180" r="3.8" fill="#6d6b8e"/>
   <circle cx="${fx}" cy="${fy}" r="7.5" fill="#6159c7" stroke="white" stroke-width="3"/>
   <text x="192" y="198" font-size="12" fill="#9b9db2" font-family="Georgia,serif">O</text>
-  </svg><div class="circle-legend"><span><i class="legend-x"></i>横：cos</span><span><i class="legend-y"></i>縦：sin</span></div>`;
+  </svg><div class="circle-legend"><span><i class="legend-x"></i>${t('circleHorizontal')}</span><span><i class="legend-y"></i>${t('circleVertical')}</span></div>`;
 }
 function tick() {
   if (state!=='play'||mode!=='timed') return;
   const remain=Math.max(0,deadline-performance.now());
   const sec=Math.ceil(remain/1000);
-  $('timerText').innerHTML=sec+'<span class="unit"> 秒</span>';
+  $('timerText').innerHTML=sec+'<span class="unit">'+t('secShort')+'</span>';
   $('timerFill').style.width=Math.min(100,remain/600)+'%';
   $('timerFill').classList.toggle('urgent',remain<=10000);
   if(remain<=0)finish();
+}
+function renderResult(){
+  if(!resultData)return;
+  const {correct:scored,attempts:answered,maxStreak:longest,record,isNew}=resultData;
+  $('resultCorrect').textContent=scored;
+  $('resultAttempted').textContent=answered+t('unitShort');
+  $('resultBestStreak').textContent=longest+t('unitShort');
+  $('resultRecord').textContent=record+t('unitShort');
+  $('resultMessage').textContent=t(isNew?'resultNewRecord':scored?'resultNormal':'resultZero');
 }
 function finish() {
   if(state!=='play')return;
@@ -917,12 +1003,8 @@ function finish() {
   const key='trig-bloom-record-'+level;
   const old=readRecord(key),isNew=correct>old;
   if(isNew)writeRecord(key,correct);
-  $('resultCorrect').textContent=correct;
-  $('resultAttempted').textContent=attempts+'問';
-  $('resultBestStreak').textContent=maxStreak+'問';
-  $('resultRecord').textContent=Math.max(old,correct)+'問';
-  $('resultMessage').textContent=isNew?'自己ベスト更新！少しずつできることが増えているね。':(correct?'今日の挑戦が、次の正解につながるよ。':'まずは挑戦できたことがスタート！次もいこう。');
-  showScreen('result');
+  resultData={correct,attempts,maxStreak,record:Math.max(old,correct),isNew};
+  showScreen('result');renderResult();
 }
 function goHome() { document.body.classList.remove('is-reveal'); clearInterval(timerId);clearTimeout(autoNextId);timerId=null;autoNextId=null;document.body.classList.remove('timed-mode');showScreen('home'); }
 function handleKey(e) {
@@ -951,6 +1033,9 @@ function init() {
   $('allLevelMath').innerHTML=svgMath('0\\;\\sim\\;2\\pi');
   $('circleFootnoteMath').innerHTML=svgMath('(\\cos\\theta,\\;\\sin\\theta)');
   chooseLevel(readRecord('trig-bloom-level')?'all':'basic');
+  document.querySelectorAll('[data-lang]').forEach(b=>b.addEventListener('click',()=>setLanguage(b.dataset.lang)));
+  let stored='ja';try{stored=localStorage.getItem('trig-bloom-language')||'ja';}catch(_){}
+  setLanguage(stored);
 }
 init();
 </script>
