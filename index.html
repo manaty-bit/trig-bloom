@@ -1035,7 +1035,8 @@ function init() {
   chooseLevel(readRecord('trig-bloom-level')?'all':'basic');
   document.querySelectorAll('[data-lang]').forEach(b=>b.addEventListener('click',()=>setLanguage(b.dataset.lang)));
   let stored='ja';try{stored=localStorage.getItem('trig-bloom-language')||'ja';}catch(_){}
-  setLanguage(stored);
+  const requested=new URLSearchParams(window.location.search).get('lang');
+  setLanguage(requested==='en'||requested==='ja'?requested:stored);
 }
 init();
 </script>
