@@ -449,6 +449,87 @@ body.timed-mode .timed-note{margin-top:6px}
  .next-button{height:35px;margin-top:3px}
 }
 
+
+/* v10: purposeful, full-height desktop home. Mobile retains the compact one-screen flow. */
+.home-visual,.home-action-top{display:none}
+@media (min-width:850px){
+  .start-screen{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1.03fr);
+    grid-template-rows:minmax(0,1fr) auto;
+    gap:12px clamp(20px,3vw,45px);
+    align-items:center;
+    max-width:1140px;
+    width:100%;
+    min-height:0;
+    padding:0 4px;
+    text-align:left;
+  }
+  .home-intro{min-width:0;align-self:center;padding:4px 5px 2px 2px;}
+  .home-intro .welcome-mark{height:30px;font-size:27px;text-align:left;letter-spacing:3px;}
+  .home-intro .eyebrow{margin:7px 0 13px;letter-spacing:.2em;font-size:11px;}
+  .home-intro h1{font-size:clamp(36px,3.9vw,56px);line-height:1.28;letter-spacing:.03em;}
+  .home-intro .lead{margin:15px 0 0;font-size:14px;line-height:1.75;}
+  .home-visual{display:block;width:100%;max-width:435px;margin-top:21px;overflow:hidden;background:linear-gradient(138deg,#ffffff 0%,#f6f5ff 85%);border:1px solid #e8e5f6;border-radius:24px;padding:15px 18px 9px;box-shadow:0 12px 32px #6260980d;}
+  .home-visual-top{display:flex;align-items:center;gap:7px;color:#66678f;font-size:12px;font-weight:750;}
+  .home-visual-mark{color:#9087d7;font-size:18px;}
+  .home-visual-label{margin-left:auto;font-size:9px;letter-spacing:.13em;color:#a39dc8;}
+  .home-preview-svg{display:block;width:100%;height:190px;margin:0 auto;}
+  .home-visual-foot{margin:0 0 4px;font-size:11px;color:#8586a0;text-align:center;}
+  .home-action-panel{width:100%;min-width:0;max-width:555px;justify-self:end;background:rgba(255,255,255,.85);border:1px solid #e9e7f4;border-radius:30px;padding:25px 24px 23px;box-shadow:0 20px 66px #49477a12;}
+  .home-action-top{display:block;margin:0 2px 21px;}
+  .home-action-kicker{font-size:10px;letter-spacing:.21em;color:#9690c5;font-weight:800;}
+  .home-action-top h2{font-size:24px;line-height:1.35;letter-spacing:.015em;color:#393d65;margin:9px 0 7px;}
+  .home-action-top p{font-size:12px;line-height:1.55;color:#8c8ea7;margin:0;}
+  .home-action-panel .mode-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;text-align:left;}
+  .home-action-panel .mode-card{min-height:116px;display:grid;grid-template-columns:58px minmax(0,1fr) auto;grid-template-rows:auto auto;column-gap:14px;align-items:center;padding:16px 15px;border-radius:19px;box-shadow:0 6px 20px #5854830b;}
+  .home-action-panel .mode-card:hover{transform:translateY(-2px);border-color:#a9a2e6;box-shadow:0 9px 26px #57519d1b;}
+  .home-action-panel .mode-symbol{grid-column:1;grid-row:1 / span 2;width:53px;height:53px;margin:0;display:grid;place-items:center;border-radius:16px;background:#eeeaff;color:#6b60bb;font-size:26px;}
+  .home-action-panel .mode-timed .mode-symbol{background:#fff0e8;color:#d48a76;}
+  .home-action-panel .mode-name{grid-column:2;grid-row:1;align-self:end;font-size:19px;line-height:1.25;letter-spacing:0;}
+  .home-action-panel .mode-desc{grid-column:2;grid-row:2;align-self:start;font-size:11px;line-height:1.55;margin:5px 0 0;}
+  .home-action-panel .mode-cta{grid-column:3;grid-row:1 / span 2;white-space:nowrap;align-self:center;display:inline-flex;align-items:center;background:#eeeaff;color:#6159b7;padding:12px 11px;border-radius:12px;font-size:11px;}
+  .home-action-panel .mode-timed .mode-cta{background:#fff1e9;color:#b77967;}
+  .home-action-panel .level-card{margin:16px 0 0;padding:15px 16px 14px;border-radius:17px;box-shadow:none;background:#faf9fe;}
+  .home-action-panel .level-top{margin-bottom:10px;}
+  .home-action-panel .level-button{padding:9px 6px;}
+  .start-screen .bottom-tip{grid-column:1 / -1;align-self:center;text-align:center;margin:0 0 3px;color:#9695ad;font-size:11px;}
+}
+@media (min-width:850px) and (max-height:750px){
+ .home-intro .eyebrow{margin:5px 0 9px;}
+ .home-intro h1{font-size:clamp(35px,3.65vw,49px);}
+ .home-intro .lead{margin-top:9px;font-size:12px;}
+ .home-visual{margin-top:13px;padding:10px 14px 6px;}
+ .home-preview-svg{height:145px;}
+ .home-action-panel{padding:17px 20px;}
+ .home-action-top{margin-bottom:12px;}
+ .home-action-top h2{font-size:21px;margin:5px 0;}
+ .home-action-panel .mode-grid{gap:9px;}
+ .home-action-panel .mode-card{min-height:97px;padding:11px 13px;}
+ .home-action-panel .mode-symbol{height:45px;width:45px;}
+ .home-action-panel .mode-card{grid-template-columns:50px minmax(0,1fr) auto;}
+ .home-action-panel .level-card{margin-top:12px;padding:12px 14px;}
+ .home-action-panel .level-top{margin-bottom:6px;}
+ .home-action-panel .level-button{padding:7px 6px;}
+}
+@media (min-width:850px) and (max-height:590px){
+ .home-visual{display:none;}
+ .home-action-panel{padding:12px 15px;}
+ .home-action-top{margin-bottom:8px;}
+ .home-action-top h2{font-size:18px;}
+ .home-action-top p{font-size:11px;}
+ .home-action-panel .mode-card{min-height:82px;padding:7px 12px;}
+ .home-action-panel .mode-symbol{height:40px;width:40px;font-size:21px;}
+ .home-action-panel .level-card{padding:7px 12px;margin-top:8px;}
+ .home-action-panel .level-button{padding:4px 4px;}
+ .home-intro .lead{line-height:1.5;}
+ .start-screen .bottom-tip{margin:0;}
+}
+@media (max-width:849px){
+  .home-intro,.home-action-panel{display:contents;}
+  .home-action-top,.home-visual{display:none!important;}
+}
+
 </style>
   
 </head>
@@ -463,25 +544,59 @@ body.timed-mode .timed-note{margin-top:6px}
     </header>
 
     <section class="screen start-screen" id="homeScreen" aria-labelledby="homeTitle">
-      <div class="welcome-mark" aria-hidden="true">◌ <span>✦</span></div>
-      <p class="eyebrow">SPECIAL ANGLES · SIN / COS / TAN</p>
-      <h1 id="homeTitle">角度がわかる。<br><em>値がわかる。</em></h1>
-      <p class="lead">問題を見て、符号と値を選ぶだけ。<br>答え合わせでは単位円が教えてくれるよ。</p>
-      <div class="mode-grid" aria-label="モードを選ぶ">
-        <button class="mode-card mode-practice" type="button" data-start="practice">
-          <span class="mode-symbol" aria-hidden="true">✿</span><span class="mode-name">じっくり練習</span>
-          <span class="mode-desc">自分のペースで、一問ずつ。</span><span class="mode-cta">はじめる <span aria-hidden="true">→</span></span>
-        </button>
-        <button class="mode-card mode-timed" type="button" data-start="timed">
-          <span class="mode-symbol" aria-hidden="true">◷</span><span class="mode-name">60秒チャレンジ</span>
-          <span class="mode-desc">ミス・パスで −5秒／10連続正解で ＋5秒</span><span class="mode-cta">チャレンジ <span aria-hidden="true">→</span></span>
-        </button>
+      <div class="home-intro">
+        <div class="welcome-mark" aria-hidden="true">◌ <span>✦</span></div>
+        <p class="eyebrow">SPECIAL ANGLES · SIN / COS / TAN</p>
+        <h1 id="homeTitle">角度がわかる。<br><em>値がわかる。</em></h1>
+        <p class="lead">問題を見て、符号と値を選ぶだけ。<br>答え合わせでは単位円が教えてくれるよ。</p>
+        <div class="home-visual" aria-hidden="true">
+          <div class="home-visual-top">
+            <span class="home-visual-mark">✦</span> 単位円で「なぜ？」がわかる
+            <span class="home-visual-label">UNIT CIRCLE</span>
+          </div>
+          <svg viewBox="0 0 460 230" class="home-preview-svg" focusable="false">
+            <circle cx="205" cy="115" r="86" fill="#f8f7ff" stroke="#c5c0ed" stroke-width="2.5"/>
+            <path d="M70 115 H341 M205 217 V13" stroke="#afb5ce" stroke-width="1.4" fill="none"/>
+            <path d="M335 110 L342 115 L335 120 M200 19 L205 12 L210 19" stroke="#afb5ce" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <path d="M205 115 L253.5 115 A48.5 48.5 0 0 0 239.3 80.7 Z" fill="#e3dfff"/>
+            <line x1="205" y1="115" x2="265.8" y2="54.2" stroke="#8279d4" stroke-width="3.5" stroke-linecap="round"/>
+            <line x1="205" y1="115" x2="265.8" y2="115" stroke="#57b3a4" stroke-width="5" stroke-linecap="round"/>
+            <line x1="265.8" y1="115" x2="265.8" y2="54.2" stroke="#e6a086" stroke-width="5" stroke-linecap="round"/>
+            <circle cx="265.8" cy="54.2" r="7.5" fill="#6761c6" stroke="#fff" stroke-width="3"/>
+            <circle cx="205" cy="115" r="3.2" fill="#686c8f"/>
+            <text x="348" y="110" fill="#9193ae" font-size="16" font-family="Georgia,serif">x</text>
+            <text x="218" y="17" fill="#9193ae" font-size="16" font-family="Georgia,serif">y</text>
+            <text x="221" y="103" fill="#716bc1" font-size="16" font-family="Georgia,serif">45°</text>
+            <text x="274" y="43" fill="#716bc1" font-size="16" font-family="Georgia,serif">P</text>
+            <text x="220" y="135" fill="#61a99d" font-size="15" font-family="Georgia,serif">cos</text>
+            <text x="275" y="90" fill="#dc9c82" font-size="15" font-family="Georgia,serif">sin</text>
+            <text x="179" y="134" fill="#a0a1b6" font-size="12" font-family="Georgia,serif">O</text>
+          </svg>
+          <p class="home-visual-foot">位置を確かめると、答えが自分のものになる。</p>
+        </div>
       </div>
-      <div class="level-card">
-        <div class="level-top"><span class="level-heading">出題範囲</span><span class="level-note" id="levelDescription">まずは第1象限の基本角から</span></div>
-        <div class="level-switch" role="group" aria-label="出題範囲">
-          <button type="button" class="level-button active" data-level="basic" aria-pressed="true">基本角 <small id="basicLevelMath">0 〜 π/2</small></button>
-          <button type="button" class="level-button" data-level="all" aria-pressed="false">全角度 <small id="allLevelMath">0 〜 2π</small></button>
+      <div class="home-action-panel">
+        <div class="home-action-top">
+          <span class="home-action-kicker">CHOOSE YOUR STYLE</span>
+          <h2>今日は、どちらで挑戦する？</h2>
+          <p>まずは自分のペースで。慣れたらタイムアタック！</p>
+        </div>
+        <div class="mode-grid" aria-label="モードを選ぶ">
+          <button class="mode-card mode-practice" type="button" data-start="practice">
+            <span class="mode-symbol" aria-hidden="true">✿</span><span class="mode-name">じっくり練習</span>
+            <span class="mode-desc">単位円を見ながら、自分のペースで。</span><span class="mode-cta">はじめる <span aria-hidden="true">→</span></span>
+          </button>
+          <button class="mode-card mode-timed" type="button" data-start="timed">
+            <span class="mode-symbol" aria-hidden="true">◷</span><span class="mode-name">60秒チャレンジ</span>
+            <span class="mode-desc">ミス −5秒／10連続正解で ＋5秒</span><span class="mode-cta">挑戦する <span aria-hidden="true">→</span></span>
+          </button>
+        </div>
+        <div class="level-card">
+          <div class="level-top"><span class="level-heading">出題範囲</span><span class="level-note" id="levelDescription">まずは第1象限の基本角から</span></div>
+          <div class="level-switch" role="group" aria-label="出題範囲">
+            <button type="button" class="level-button active" data-level="basic" aria-pressed="true">基本角 <small id="basicLevelMath">0 〜 π/2</small></button>
+            <button type="button" class="level-button" data-level="all" aria-pressed="false">全角度 <small id="allLevelMath">0 〜 2π</small></button>
+          </div>
         </div>
       </div>
       <p class="bottom-tip"><span aria-hidden="true">♡</span> 間違えても大丈夫。図で確認すれば、それが次の正解になる。</p>
